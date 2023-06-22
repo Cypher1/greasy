@@ -25,6 +25,7 @@ D # git diff --staged
 gg # git grep
 gl # git ls-files | grep
 p # git push # (dual to P)
+ph # git push origin HEAD
 continue # git rebase --continue
 skip # git rebase --skip
 ```
