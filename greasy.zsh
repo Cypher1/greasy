@@ -118,8 +118,7 @@ alias a="git add"
 alias m="git commit -m "
 alias d="git diff --diff-algorithm=patience"
 alias D="git diff --staged --diff-algorithm=patience"
-alias p="git push"
-alias ph="git push origin HEAD"
+alias p="git push origin HEAD"
 
 function hub() {
   remote=$(git remote -v | grep origin | tr '\t' ' ' | cut -f2 -d' ' | head -n1)
