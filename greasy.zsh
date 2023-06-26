@@ -150,3 +150,17 @@ function run() {(
 alias r="run"
 alias t="run test"
 alias b="run build"
+
+#compdef P
+_P() {
+  local state
+
+  _arguments \
+    '1: :->branch'
+
+  case $state in
+    (branch) _arguments "1:branch:($(git branch -a --format='%(refname:short)'))" ;;
+  esac
+}
+
+compdef _P P
