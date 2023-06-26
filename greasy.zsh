@@ -72,9 +72,10 @@ function P() {
 
 # Auto completer for P. Can be used with zsh's `compdef _P P`.
 _P() {
-  export branches=($(git branch --no-column --no-color -a | sed "s/[ *] //"))
+  export branches=($(git branch -a --format='%(refname:short)'))
   compadd -l -a -- branches
 }
+compdef _P P
 
 # Just like P, but for all branches and fetches the upstream. Note: Requires depot_tools.
 function PA() {
@@ -150,17 +151,3 @@ function run() {(
 alias r="run"
 alias t="run test"
 alias b="run build"
-
-#compdef P
-_P() {
-  local state
-
-  _arguments \
-    '1: :->branch'
-
-  case $state in
-    (branch) _arguments "1:branch:($(git branch -a --format='%(refname:short)'))" ;;
-  esac
-}
-
-compdef _P P
