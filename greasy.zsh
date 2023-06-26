@@ -75,7 +75,6 @@ _P() {
   export branches=($(git branch -a --format='%(refname:short)'))
   compadd -l -a -- branches
 }
-compdef _P P
 
 # Just like P, but for all branches and fetches the upstream. Note: Requires depot_tools.
 function PA() {
