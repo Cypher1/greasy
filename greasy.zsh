@@ -65,9 +65,11 @@ function fetch_all() {
 function P() {
   fetch_all
   if [[ -n $1 ]]; then
-    git checkout "$1"
+    git checkout "$1" || git checkout -b "$1"
+    git rebase --onto origin/$1
+  else
+    git pull --rebase
   fi
-  git pull --rebase
 }
 
 # Auto completer for P. Can be used with zsh's `compdef _P P`.
