@@ -73,7 +73,7 @@ function P() {
 }
 
 # Auto completer for P. Can be used with zsh's `compdef _P P`.
-_P() {
+function _P() {
   export branches=($(git branch -a --format='%(refname:short)'))
   compadd -l -a -- branches
 }
