@@ -82,12 +82,10 @@ _P() {
 function PA() {
   fetch_all
   from_branch=$(branch)
-  for r in $(git remote); do
-    git fetch "$r"
-  done
   for b in $(git branch --no-color | sed "s/^[* ]*//"); do
     echo "Pulling $b"
-    P "$b" || return 1
+    git checkout "$b"
+    P || return 1
   done
   git checkout "$from_branch"
 }
@@ -126,7 +124,7 @@ function hub() {
   remote=$(git remote -v | grep origin | tr '\t' ' ' | cut -f2 -d' ' | head -n1)
   xdg-open "$(echo "$remote" | sed "s|git@|http://|" | sed "s/com:/com\\//")"
 }
-alias edit="git status --porcelain | sed \"s/^..//\" | xargs \$EDITOR"
+alias edit="git status --porcelain | sed \"s/^..//\" | sed \"s/ ->.*//\" | xargs \$EDITOR"
 alias last="git diff HEAD~1 --raw | grep -o '[^ ]*$' | sed 's/^..//' | sed \"s/.*->//\" | xargs \$EDITOR"
 
 function __run() {
