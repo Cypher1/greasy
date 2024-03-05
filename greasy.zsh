@@ -38,16 +38,20 @@ function mtmp() {
   git commit -m "TMP$MSG - modified" --no-verify
 }
 
+function is_tmp() {
+  git log | grep -v "\(commit\|[A-Za-z]*:\|^$\)" | head -n 1 | sed "s/^ *//" | grep 'TMP - '
+}
+
 # Un-does an `mtmp` roughly eq to `git stash pop`.
 function unmtmp() {
-  fst="$(git log | head -n 1 | grep ' TMP - ')"
-  if [[ -z $fst ]]; then
+  cmt="$(is_tmp)"
+  if [[ -z $cmt ]]; then
     echo 'No tmps found'; return
   fi
   git reset 'HEAD~'
   git stash
-  git log | head -n 1 | grep ' TMP - '
-  if [[ -n $fst ]]; then
+  cmt="$(is_tmp)"
+  if [[ -n $cmt ]]; then
     git reset 'HEAD~'
     git add --all
   fi
@@ -72,6 +76,7 @@ function P() {
   fi
 }
 
+
 # Auto completer for P. Can be used with zsh's `compdef _P P`.
 function _P() {
   export branches=($(git branch -a --format='%(refname:short)'))
@@ -84,8 +89,8 @@ function PA() {
   from_branch=$(branch)
   for b in $(git branch --no-color | sed "s/^[* ]*//"); do
     echo "Pulling $b"
-    git checkout "$b"
-    P || return 1
+    git checkout "$b" || git checkout -b "$b"
+    git pull --rebase || return 1
   done
   git checkout "$from_branch"
 }
