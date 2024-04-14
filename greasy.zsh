@@ -113,6 +113,8 @@ alias -s git='git clone'
 # Grep for git for:
 alias gg="git grep" # lines
 alias gf="git ls-files | grep" # files
+alias gt="git ls-tree -r --name-only HEAD | tree --fromfile"
+alias gdt="git ls-tree --name-only -r HEAD | sed 's|\/[^\/]*$||' | sort | uniq | tree --fromfile"
 alias gl="git log --all --decorate --graph" # git log
 alias glo="git log --all --decorate --oneline --graph" # git log
 # git log reverse
