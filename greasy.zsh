@@ -120,8 +120,8 @@ alias glr="git log --color=always --all --decorate --oneline --graph | tac | sed
 # Takes the output from gg or gl and opens each file in your editor of choice.
 # Example: `gg " wat " | ge` will open all files stored in git containing ' wat '.
 function ge() {
-  files=$(grep "[/\\\.]" | sed "s/.*-> //" | sed "s/:.*//" | sed "s/ *|.*//" | sort | uniq)
-  $EDITOR $files[@]
+  files=( $(grep "[/\\\.]" | sed "s/.*-> //" | sed "s/:.*//" | sed "s/ *|.*//" | sort | uniq) )
+  $EDITOR "${files[@]}"
 }
 # List authors
 alias ga="git ls-files | while read f; do git blame --line-porcelain \"\$f\" | grep \"^author \" | sed \"s/author //\"; done | sort -f | uniq -ic | sort -n"
@@ -144,16 +144,16 @@ function edit() {
     ROOT="$(root)"
     TAB="$(echo "\t")"
     cd $ROOT
-    files=$(git status --porcelain | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|")
-    $EDITOR $files[@]
+    files=( $(git status --porcelain | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|") )
+    $EDITOR "${files[@]}"
 }
 
 function last() {
     ROOT="$(root)"
     TAB="$(echo "\t")"
     cd $ROOT
-    files=$(git diff HEAD~1 --raw | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|")
-    $EDITOR $files[@]
+    files=( $(git diff HEAD~1 --raw | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|") )
+    $EDITOR "${files[@]}"
 }
 
 function __run() {
