@@ -23,7 +23,8 @@ m "$MSG" # git commit -m "$MSG"
 d # git diff
 D # git diff --staged
 gg # git grep
-gl # git ls-files | grep
+gf # git ls-files | grep
+gl # git log --all --decorate --oneline --graph
 p # git push # (dual to P)
 ph # git push origin HEAD
 continue # git rebase --continue

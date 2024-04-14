@@ -27,6 +27,10 @@ if [[ -d "$DEPOT_TOOLS" ]]; then
   export PATH="$PATH:$DEPOT_TOOLS"
 fi
 
+function root() {
+    git rev-parse --show-toplevel
+}
+
 # 'Stash' changes on the current branch using temporary commits. Roughly eq to `git stash`.
 function mtmp() {
   MSG=" - $*"
@@ -100,6 +104,7 @@ alias branch="git branch --color=never | grep '\*' | sed 's/* \(.*\)$/\1/' | sed
 # Shows all git branches (works best with depot_tools).
 alias map="(git status 1&> /dev/null 2&>/dev/null && git --no-pager branch -vv) || ls"
 alias continue="git rebase --continue || git merge --continue"
+alias abort="git rebase --abort || git merge --abort"
 alias skip="git rebase --skip"
 
 # Easy cloning
@@ -107,11 +112,16 @@ alias -s git='git clone'
 
 # Grep for git for:
 alias gg="git grep" # lines
-alias gl="git ls-files | grep" # files
+alias gf="git ls-files | grep" # files
+alias gl="git log --all --decorate --graph" # git log
+alias glo="git log --all --decorate --oneline --graph" # git log
+# git log reverse
+alias glr="git log --color=always --all --decorate --oneline --graph | tac | sed 's|\\/|\\$\\\\|' | sed 's|\\\\|\\/|' | sed 's|\\$\\/|\\\\|'"
 # Takes the output from gg or gl and opens each file in your editor of choice.
 # Example: `gg " wat " | ge` will open all files stored in git containing ' wat '.
 function ge() {
-  grep "[/\\\.]" | sed "s/.*-> //" | sed "s/:.*//" | sed "s/ *|.*//" | sort | uniq | xargs "$EDITOR"
+  files=$(grep "[/\\\.]" | sed "s/.*-> //" | sed "s/:.*//" | sed "s/ *|.*//" | sort | uniq)
+  $EDITOR $files[@]
 }
 # List authors
 alias ga="git ls-files | while read f; do git blame --line-porcelain \"\$f\" | grep \"^author \" | sed \"s/author //\"; done | sort -f | uniq -ic | sort -n"
@@ -129,8 +139,22 @@ function hub() {
   remote=$(git remote -v | grep origin | tr '\t' ' ' | cut -f2 -d' ' | head -n1)
   xdg-open "$(echo "$remote" | sed "s|git@|http://|" | sed "s/com:/com\\//")"
 }
-alias edit="git status --porcelain | sed \"s/^..//\" | sed \"s/ ->.*//\" | xargs \$EDITOR"
-alias last="git diff HEAD~1 --raw | grep -o '[^ ]*$' | sed 's/^..//' | sed \"s/.*->//\" | xargs \$EDITOR"
+
+function edit() {
+    ROOT="$(root)"
+    TAB="$(echo "\t")"
+    cd $ROOT
+    files=$(git status --porcelain | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|")
+    $EDITOR $files[@]
+}
+
+function last() {
+    ROOT="$(root)"
+    TAB="$(echo "\t")"
+    cd $ROOT
+    files=$(git diff HEAD~1 --raw | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|")
+    $EDITOR $files[@]
+}
 
 function __run() {
   declare -A project_type=( ["package.json"]="npm run" ["cargo.toml"]="cargo" ["Cargo.toml"]="cargo" ["run.sh"]="bash ./run.sh" ["test.sh"]="bash ./test.sh" ["BUILD"]="blaze")
