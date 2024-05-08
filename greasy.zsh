@@ -70,7 +70,7 @@ function fetch_all() {
 
 # Checks out a branch and rebases against the parent branch.
 # Optional argument is which branch to checkout (otherwise the current branch will be used).
-function P() {
+function p() {
   fetch_all
   if [[ -n $1 ]]; then
     git checkout "$1" || git checkout -b "$1"
@@ -82,13 +82,13 @@ function P() {
 
 
 # Auto completer for P. Can be used with zsh's `compdef _P P`.
-function _P() {
+function _p() {
   export branches=($(git branch -a --format='%(refname:short)'))
   compadd -l -a -- branches
 }
 
 # Just like P, but for all branches and fetches the upstream. Note: Requires depot_tools.
-function PA() {
+function pa() {
   fetch_all
   from_branch=$(branch)
   for b in $(git branch --no-color | sed "s/^[* ]*//"); do
@@ -142,7 +142,7 @@ alias a="git add"
 alias m="git commit -m "
 alias d="git diff --diff-algorithm=patience"
 alias D="git diff --staged --diff-algorithm=patience"
-alias p="git push origin HEAD"
+alias P="git push origin HEAD"
 
 function hub() {
   remote=$(git remote -v | grep origin | tr '\t' ' ' | cut -f2 -d' ' | head -n1)

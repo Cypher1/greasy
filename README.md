@@ -25,7 +25,7 @@ D # git diff --staged
 gg # git grep
 gf # git ls-files | grep
 gl # git log --all --decorate --oneline --graph
-p # git push # (dual to P)
+P # git push # (dual to p)
 ph # git push origin HEAD
 gcontinue # git rebase --continue / git merge --continue
 skip # git rebase --skip
@@ -39,12 +39,12 @@ git push origin $(branch)
 ```
 
 ```bash
-P # git pull --rebase # from tracked branch
-P $branch # git checkout $branch; git pull --rebase # from origin/$branch
+p # git pull --rebase # from tracked branch
+p $branch # git checkout $branch; git pull --rebase # from origin/$branch
 ```
 
 ```bash
-PA # git pull --rebase, but for ALL branches, pausing if there are merge conflicts.
+pa # git pull --rebase, but for ALL branches, pausing if there are merge conflicts.
 ```
 
 ```bash
