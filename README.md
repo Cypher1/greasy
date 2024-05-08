@@ -27,7 +27,7 @@ gf # git ls-files | grep
 gl # git log --all --decorate --oneline --graph
 p # git push # (dual to P)
 ph # git push origin HEAD
-continue # git rebase --continue
+gcontinue # git rebase --continue / git merge --continue
 skip # git rebase --skip
 ```
 
@@ -39,8 +39,8 @@ git push origin $(branch)
 ```
 
 ```bash
-P # git pull --rebase
-P $branch # git checkout $branch; git pull --rebase
+P # git pull --rebase # from tracked branch
+P $branch # git checkout $branch; git pull --rebase # from origin/$branch
 ```
 
 ```bash
