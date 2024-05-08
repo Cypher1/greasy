@@ -127,6 +127,13 @@ function ge() {
 }
 # List authors
 alias ga="git ls-files | while read f; do git blame --line-porcelain \"\$f\" | grep \"^author \" | sed \"s/author //\"; done | sort -f | uniq -ic | sort -n"
+alias gb="git blame"
+ggb() {
+  # from i8ramin - http://getintothis.com/blog/2012/04/02/git-grep-and-blame-bash-function/
+  # runs git grep on a pattern, and then uses git blame to who did it
+  git grep -E -n $1 | while IFS=: read i j k; do git blame -L $j,$j $i | cat; done
+}
+
 # Rename a branch
 alias gm="git branch -m"
 # Single letter shortenings for extremely common git commands
