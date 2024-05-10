@@ -70,12 +70,14 @@ function fetch_all() {
 # Optional argument is which branch to checkout (otherwise the current branch will be used).
 function p() {
   fetch_all
-  if [[ $1 != "$(branch)" ]]; then
-    git checkout "$1" || git checkout -b "$1"
-    git rebase --onto "$1"
-  else
-    git pull --rebase
+  if [[ -n $1 ]]; then
+    if [[ $1 != "$(branch)" ]]; then
+      git checkout "$1" || git checkout -b "$1"
+      git rebase --onto "$1"
+      return
+    fi
   fi
+  git pull --rebase
 }
 
 # Auto completer for p. Can be used with zsh's `compdef _p p`.
@@ -156,6 +158,10 @@ function P() {
 
 function PF() {
   git push -f "${1:-origin}" "${2:-HEAD}"
+}
+
+function pP() {
+  p $@ && P
 }
 
 function hub() {
