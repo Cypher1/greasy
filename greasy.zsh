@@ -81,13 +81,13 @@ function p() {
 }
 
 
-# Auto completer for P. Can be used with zsh's `compdef _P P`.
+# Auto completer for p. Can be used with zsh's `compdef _p p`.
 function _p() {
   export branches=($(git branch -a --format='%(refname:short)'))
   compadd -l -a -- branches
 }
 
-# Just like P, but for all branches and fetches the upstream. Note: Requires depot_tools.
+# Just like p, but for all branches and fetches the upstream. Note: Requires depot_tools.
 function pa() {
   fetch_all
   from_branch=$(branch)
@@ -143,7 +143,14 @@ alias a="git add"
 alias m="git commit -m "
 alias d="git diff --diff-algorithm=patience"
 alias D="git diff --staged --diff-algorithm=patience"
-alias P="git push origin HEAD"
+
+function P() {
+  git push "${1:-origin}" "${2:-HEAD}"
+}
+
+function PF() {
+  git push -f "${1:-origin}" "${2:-HEAD}"
+}
 
 function hub() {
   remote=$(git remote -v | grep origin | tr '\t' ' ' | cut -f2 -d' ' | head -n1)
