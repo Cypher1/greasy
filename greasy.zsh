@@ -110,7 +110,6 @@ function pa() {
 alias branch="git branch --color=never | grep '\*' | sed 's/* \(.*\)$/\1/' | sed 's/(HEAD detached at [^\/]*\///' | sed 's/)//' | head -n 1"
 # Shows all git branches (works best with depot_tools).
 alias map="(git status 1&> /dev/null 2&>/dev/null && git --no-pager branch -vv) || ls"
-alias gcontinue="git rebase --continue || git merge --continue"
 alias next="git rebase --continue || git merge --continue"
 alias abort="git rebase --abort || git merge --abort"
 alias skip="git rebase --skip"
