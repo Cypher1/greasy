@@ -72,7 +72,7 @@ function p() {
   fetch_all
   if [[ $1 != "$(branch)" ]]; then
     git checkout "$1" || git checkout -b "$1"
-    git rebase --onto origin/$1
+    git rebase --onto "$1"
   else
     git pull --rebase
   fi
