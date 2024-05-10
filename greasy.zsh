@@ -70,7 +70,7 @@ function fetch_all() {
 # Optional argument is which branch to checkout (otherwise the current branch will be used).
 function p() {
   fetch_all
-  if [[ -n $1 ]]; then
+  if [[ $1 != "$(branch)" ]]; then
     git checkout "$1" || git checkout -b "$1"
     git rebase --onto origin/$1
   else
