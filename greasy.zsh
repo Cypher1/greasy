@@ -63,9 +63,7 @@ function unmtmp() {
 }
 
 function fetch_all() {
-  for r in $(git remote); do
-    git fetch "$r"
-  done
+  git fetch --all
 }
 
 # Checks out a branch and rebases against the parent branch.
@@ -80,10 +78,19 @@ function p() {
   fi
 }
 
-
 # Auto completer for p. Can be used with zsh's `compdef _p p`.
 function _p() {
-  export branches=($(git branch -a --format='%(refname:short)'))
+  branches=($(git branch -a --format='%(refname:short)'))
+  compadd -l -a -- branches
+}
+
+function up() {
+  git branch --set-upstream-to "${1:-origin}"
+}
+
+# Auto completer for p. Can be used with zsh's `compdef _p p`.
+function _up() {
+  branches=($(git branch -a --format='%(refname:short)'))
   compadd -l -a -- branches
 }
 
