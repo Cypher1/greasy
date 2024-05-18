@@ -73,7 +73,6 @@ function p() {
   if [[ -n $1 ]]; then
     if [[ $1 != "$(branch)" ]]; then
       git checkout "$1" || git checkout -b "$1"
-      git rebase --onto "$1"
       return
     fi
   fi
@@ -111,7 +110,7 @@ function pa() {
 # Returns the current branch for short commands like `git push origin $(branch) -f`.
 alias branch="git branch --color=never | grep '\*' | sed 's/* \(.*\)$/\1/' | sed 's/(HEAD detached at [^\/]*\///' | sed 's/)//' | head -n 1"
 # Shows all git branches (works best with depot_tools).
-alias map="(git status 1&> /dev/null 2&>/dev/null && git --no-pager branch -vv) || ls"
+alias map="(git status -sb 2&>/dev/null && echo "" && git --no-pager branch -vv) || ls"
 alias next="git rebase --continue || git merge --continue"
 alias abort="git rebase --abort || git merge --abort"
 alias skip="git rebase --skip"
@@ -144,9 +143,25 @@ ggb() {
 }
 
 # Rename a branch
-alias gm="git branch -m"
+alias bn="branch"
+alias brn="git branch -m"
+function bd() {
+  target="${1:-$(branch)}"
+  if [[ "$target" == "$(branch)" ]]; then
+    (git checkout main || git checkout master)
+  fi
+  git branch -d "$target"
+}
+function bdF() {
+  target="${1:-$(branch)}"
+  if [[ "$target" == "$(branch)" ]]; then
+    (git checkout main || git checkout master)
+  fi
+  git branch -D "$target"
+  git push -d origin "$target"
+}
 # Single letter shortenings for extremely common git commands
-alias s="git status -sb 2> /dev/null || ls"
+alias s="map"
 alias a="git add"
 alias m="git commit -m "
 alias d="git diff --diff-algorithm=patience"
@@ -162,6 +177,10 @@ function PF() {
 
 function pP() {
   p $@ && P
+}
+
+function pPF() {
+  p $@ && PF
 }
 
 function hub() {
