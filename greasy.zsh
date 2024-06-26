@@ -112,6 +112,7 @@ alias branch="git branch --color=never | grep '\*' | sed 's/* \(.*\)$/\1/' | sed
 # Shows all git branches (works best with depot_tools).
 alias map="(git status -sb 2&>/dev/null && echo "" && git --no-pager branch -vv) || ls"
 alias next="git rebase --continue || git merge --continue"
+alias n=next
 alias abort="git rebase --abort || git merge --abort"
 alias skip="git rebase --skip"
 
