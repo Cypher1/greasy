@@ -136,6 +136,8 @@ function ge() {
 }
 # List authors
 alias ga="git ls-files | while read f; do git blame --line-porcelain \"\$f\" | grep \"^author \" | sed \"s/author //\"; done | sort -f | uniq -ic | sort -n"
+alias gaf="git ls-files | while read f; do git blame --line-porcelain \"\$f\" | grep \"^(author|filename) \" | tr '\n' \"|\" | sed \"s/|filename//g\" | tr \"|\" '\n' | sed \"s/^author //\"; done | sort | uniq -c | sort -n"
+alias gad="git ls-files | while read f; do git blame --line-porcelain \"\$f\" | grep \"^(author|filename) \" | sed \"s/[/\\][^/\\]*$//\" | tr '\n' \"|\" | sed \"s/|filename//g\" | tr \"|\" '\n' | sed \"s/^author //\"; done | sort | uniq -c | sort -n"
 alias gb="git blame"
 ggb() {
   # from i8ramin - http://getintothis.com/blog/2012/04/02/git-grep-and-blame-bash-function/
