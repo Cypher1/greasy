@@ -196,7 +196,7 @@ function edit() {
     TAB="$(echo "\t")"
     cd $ROOT
     files=( $(git status --porcelain | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|") )
-    $EDITOR "${files[@]}"
+    $EDITOR "${files[@]}" "${@}"
 }
 
 function last() {
@@ -204,7 +204,7 @@ function last() {
     TAB="$(echo "\t")"
     cd $ROOT
     files=( $(git diff HEAD~1 --raw | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|") )
-    $EDITOR "${files[@]}"
+    $EDITOR "${files[@]}" "${@}"
 }
 
 function __run() {
