@@ -132,7 +132,7 @@ alias glr="git log --color=always --all --decorate --oneline --graph | tac | sed
 # Example: `gg " wat " | ge` will open all files stored in git containing ' wat '.
 function ge() {
   files=( $(grep "[/\\\.]" | sed "s/.*-> //" | sed "s/:.*//" | sed "s/ *|.*//" | sort | uniq) )
-  $EDITOR "${files[@]}"
+  $EDITOR "${files[@]}" "${@}"
 }
 # List authors
 alias ga="git ls-files | while read f; do git blame --line-porcelain \"\$f\" | grep \"^author \" | sed \"s/author //\"; done | sort -f | uniq -ic | sort -n"
