@@ -42,6 +42,10 @@ function mtmp() {
   git commit -m "TMP$MSG - modified" --no-verify
 }
 
+function amend() {
+  git commit --amend "${@}"
+}
+
 function is_tmp() {
   git log | grep -v "\(commit\|[A-Za-z]*:\|^$\)" | head -n 1 | sed "s/^ *//" | grep 'TMP - '
 }
@@ -223,7 +227,7 @@ function __run() {
 }
 function run() {(
   while true; do
-    __run "$@"; cd ".."
+    __run "${@}"; cd ".."
   done
 )}
 
