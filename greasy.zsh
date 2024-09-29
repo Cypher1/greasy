@@ -114,7 +114,7 @@ function pa() {
 # Returns the current branch for short commands like `git push origin $(branch) -f`.
 alias branch="git branch --color=never | grep '\*' | sed 's/* \(.*\)$/\1/' | sed 's/(HEAD detached at [^\/]*\///' | sed 's/)//' | head -n 1"
 # Shows all git branches (works best with depot_tools).
-alias map="(git status -sb 2&>/dev/null && echo "" && git --no-pager branch -vv) || ls"
+alias map="(git status -sb 2&>/dev/null && echo "" && git --no-pager branch -vv) && ls"
 alias next="git rebase --continue || git merge --continue"
 alias n=next
 alias abort="git rebase --abort || git merge --abort"
