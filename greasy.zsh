@@ -159,6 +159,13 @@ function bd() {
   fi
   git branch -d "$target"
 }
+function bD() {
+  target="${1:-$(branch)}"
+  if [[ "$target" == "$(branch)" ]]; then
+    (git checkout main || git checkout master)
+  fi
+  git branch -D "$target"
+}
 function bdF() {
   target="${1:-$(branch)}"
   if [[ "$target" == "$(branch)" ]]; then
