@@ -27,6 +27,23 @@ if [[ -d "$DEPOT_TOOLS" ]]; then
   export PATH="$PATH:$DEPOT_TOOLS"
 fi
 
+function print_with_row_cap() {
+  # Note: This cannot currently handle the keyboard height in Android's Termux
+  # This means it looks like it doesnt work, but actually it is a tput
+  # or tput usage issue.
+
+  cat | head -n "$(tput lines)"
+}
+
+function wide_bar() {
+  if read rows cols; then
+    for x in $(seq $(tput columns))
+      do printf "-"
+    done
+  fi
+}
+
+
 function root() {
     git rev-parse --show-toplevel
 }
@@ -114,6 +131,7 @@ function pa() {
 # Returns the current branch for short commands like `git push origin $(branch) -f`.
 alias branch="git branch --color=never | grep '\*' | sed 's/* \(.*\)$/\1/' | sed 's/(HEAD detached at [^\/]*\///' | sed 's/)//' | head -n 1"
 # Shows all git branches (works best with depot_tools).
+# TODO make map a function and use print_with_row_cap to prevent ls overloading the user.
 alias map="(git status -sb 2&>/dev/null && echo "" && git --no-pager branch -vv) && ls"
 alias next="git rebase --continue || git merge --continue"
 alias n=next
@@ -135,7 +153,7 @@ alias glr="git log --color=always --all --decorate --oneline --graph | tac | sed
 # Takes the output from gg or gl and opens each file in your editor of choice.
 # Example: `gg " wat " | ge` will open all files stored in git containing ' wat '.
 function ge() {
-  files=( $(grep "[/\\\.]" | sed "s/.*-> //" | sed "s/:.*//" | sed "s/ *|.*//" | sort | uniq) )
+  IFS=$'\n' files=( $(grep "[/\\\.]" | sed "s/.*-> //" | sed "s/:.*//" | sed "s/ *|.*//" | sort | uniq) )
   $EDITOR "${files[@]}" "${@}"
 }
 # List authors
@@ -206,7 +224,7 @@ function edit() {
     ROOT="$(root)"
     TAB="$(echo "\t")"
     cd $ROOT
-    files=( $(git status --porcelain | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|") )
+    IFS=$'\n' files=( $(git status --porcelain | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|") )
     $EDITOR "${files[@]}" "${@}"
 }
 
@@ -214,7 +232,7 @@ function last() {
     ROOT="$(root)"
     TAB="$(echo "\t")"
     cd $ROOT
-    files=( $(git diff HEAD~1 --raw | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|") )
+    IFS=$'\n' files=( $(git diff HEAD~1 --raw | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|") )
     $EDITOR "${files[@]}" "${@}"
 }
 
