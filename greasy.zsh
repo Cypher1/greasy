@@ -222,9 +222,8 @@ function hub() {
 
 function edit() {
     ROOT="$(root)"
-    TAB="$(echo "\t")"
     cd $ROOT
-    IFS=$'\n' files=( $(git status --porcelain | grep -o "[^ $TAB]*$" | sed "s|^|$ROOT/|") )
+    IFS=$'\n' files=( $(git status --porcelain --null | tr '\0' '\n' | sed "s/[A-Z]* *\(.*\)$/\1/" | sed "s|^|$ROOT/|") )
     $EDITOR "${files[@]}" "${@}"
 }
 
