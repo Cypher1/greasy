@@ -64,7 +64,7 @@ function amend() {
 }
 
 function is_tmp() {
-  git log | grep -v "\(commit\|[A-Za-z]*:\|^$\)" | head -n 1 | sed "s/^ *//" | grep 'TMP - '
+  git log | head -n 1 | sed "s/^ *//" | grep 'TMP - '
 }
 
 # Un-does an `mtmp` roughly eq to `git stash pop`.
