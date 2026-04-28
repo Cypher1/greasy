@@ -146,10 +146,10 @@ alias gg="git grep" # lines
 alias gf="git ls-files | grep" # files
 alias gt="git ls-tree -r --name-only HEAD | tree --fromfile"
 alias gdt="git ls-tree --name-only -r HEAD | sed 's|\/[^\/]*$||' | sort | uniq | tree --fromfile"
-alias gl="git log --all --decorate --graph" # git log
-alias glo="git log --all --decorate --oneline --graph" # git log
+alias gl="git log --first-parent --all --decorate --graph" # git log
+alias glo="git log --first-parent --all --decorate --oneline --graph" # git log
 # git log reverse
-alias glr="git log --color=always --all --decorate --oneline --graph | tac | sed 's|\\/|\\$\\\\|' | sed 's|\\\\|\\/|' | sed 's|\\$\\/|\\\\|'"
+alias glr="git log --first-parent --color=always --all --decorate --oneline --graph | tac | sed 's|\\/|\\$\\\\|' | sed 's|\\\\|\\/|' | sed 's|\\$\\/|\\\\|'"
 # Takes the output from gg or gl and opens each file in your editor of choice.
 # Example: `gg " wat " | ge` will open all files stored in git containing ' wat '.
 function ge() {
