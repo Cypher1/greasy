@@ -142,7 +142,7 @@ alias skip="git rebase --skip"
 alias -s git='git clone'
 
 # Grep for git for:
-alias gg="git grep" # lines
+alias gg="git grep -n" # lines
 alias gf="git ls-files | grep" # files
 alias gt="git ls-tree -r --name-only HEAD | tree --fromfile"
 alias gdt="git ls-tree --name-only -r HEAD | sed 's|\/[^\/]*$||' | sort | uniq | tree --fromfile"
@@ -153,7 +153,7 @@ alias glr="git log --first-parent --color=always --all --decorate --oneline --gr
 # Takes the output from gg or gl and opens each file in your editor of choice.
 # Example: `gg " wat " | ge` will open all files stored in git containing ' wat '.
 function ge() {
-  IFS=$'\n' files=( $(grep "[/\\\.]" | sed "s/.*-> //" | sed "s/:.*//" | sed "s/ *|.*//" | sort | uniq) )
+  IFS=$'\n' files=( $(sed "s/^\([^:]*\)\(\(:[0-9]*\)\?\):.*$/\1\2/" | sed "s/.*-> //" | sort | uniq -c | sort -n -r | sed "s/^[\t ]*[0-9]* //" ) )
   $EDITOR "${files[@]}" "${@}"
 }
 # List authors
